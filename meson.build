@@ -1,10 +1,10 @@
 project(
     'waybar', 'cpp', 'c',
-    version: '0.9.18',
+    version: '0.9.22',
     license: 'MIT',
     meson_version: '>= 0.50.0',
     default_options : [
-        'cpp_std=c++17',
+        'cpp_std=c++20',
         'buildtype=release',
         'default_library=static'
     ],
@@ -159,6 +159,7 @@ src_files = files(
     'src/AModule.cpp',
     'src/ALabel.cpp',
     'src/AIconLabel.cpp',
+    'src/AAppIconLabel.cpp',
     'src/modules/custom.cpp',
     'src/modules/disk.cpp',
     'src/modules/idle_inhibitor.cpp',
@@ -170,9 +171,11 @@ src_files = files(
     'src/client.cpp',
     'src/config.cpp',
     'src/group.cpp',
+    'src/util/prepare_for_sleep.cpp',
     'src/util/ustring_clen.cpp',
     'src/util/sanitize_str.cpp',
-    'src/util/rewrite_string.cpp'
+    'src/util/rewrite_string.cpp',
+    'src/util/gtk_icon.cpp'
 )
 
 inc_dirs = ['include']
@@ -240,6 +243,7 @@ if true
     src_files += 'src/modules/hyprland/window.cpp'
     src_files += 'src/modules/hyprland/language.cpp'
     src_files += 'src/modules/hyprland/submap.cpp'
+    src_files += 'src/modules/hyprland/workspaces.cpp'
 endif
 
 if libnl.found() and libnlgen.found()
@@ -342,7 +346,7 @@ if get_option('experimental')
 endif
 
 cava = dependency('cava',
-                  version : '>=0.8.4',
+                  version : '>=0.8.5',
                   required: get_option('cava'),
                   fallback : ['cava', 'cava_dep'],
                   not_found_message: 'cava is not found. Building waybar without cava')
@@ -419,6 +423,7 @@ if scdoc.found()
         main_manpage_path,
         'waybar-backlight.5.scd',
         'waybar-battery.5.scd',
+        'waybar-cava.5.scd',
         'waybar-clock.5.scd',
         'waybar-cpu.5.scd',
         'waybar-custom.5.scd',

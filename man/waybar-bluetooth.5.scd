@@ -42,6 +42,10 @@ Addressed by *bluetooth*
 	typeof: string ++
 	This format is used when the displayed controller is connected to at least 1 device.
 
+*format-no-controller*: ++
+	typeof: string ++
+	This format is used when no bluetooth controller could be found
+
 *format-icons*: ++
 	typeof: array/object ++
 	Based on the current battery percentage (see section *EXPERIMENTAL BATTERY PERCENTAGE FEATURE*), the corresponding icon gets selected. ++
@@ -57,12 +61,12 @@ Addressed by *bluetooth*
 	The maximum length in character the module should display.
 
 *min-length*: ++
-    typeof: integer ++
-    The minimum length in characters the module should take up.
+	typeof: integer ++
+	The minimum length in characters the module should take up.
 
 *align*: ++
-    typeof: float ++
-    The alignment of the text, where 0 is left-aligned and 1 is right-aligned. If the module is rotated, it will follow the flow of the text.
+	typeof: float ++
+	The alignment of the text, where 0 is left-aligned and 1 is right-aligned. If the module is rotated, it will follow the flow of the text.
 
 *on-click*: ++
 	typeof: string ++
@@ -112,6 +116,10 @@ Addressed by *bluetooth*
 *tooltip-format-connected*: ++
 	typeof: string ++
 	This format is used when the displayed controller is connected to at least 1 device.
+
+*tooltip-format-no-controller*: ++
+	typeof: string ++
+	This format is used when no bluetooth controller could be found
 
 *tooltip-format-enumerate-connected*: ++
 	typeof: string ++

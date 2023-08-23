@@ -67,6 +67,8 @@ class Mpris : public ALabel {
   int title_len_;
   int dynamic_len_;
   std::vector<std::string> dynamic_prio_;
+  std::vector<std::string> dynamic_order_;
+  std::string dynamic_separator_;
   bool truncate_hours_;
   bool tooltip_len_limits_;
   std::string ellipsis_;
@@ -80,6 +82,7 @@ class Mpris : public ALabel {
   std::string lastPlayer;
 
   util::SleeperThread thread_;
+  std::chrono::time_point<std::chrono::system_clock> last_update_;
 };
 
 }  // namespace waybar::modules::mpris

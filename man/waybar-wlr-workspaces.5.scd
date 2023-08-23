@@ -29,9 +29,8 @@ Addressed by *wlr/workspaces*
 *sort-by-coordinates*: ++
 	typeof: bool ++
 	default: true ++
-	Should workspaces be sorted by coordinates.
-	Note that if both  *sort-by-name* and *sort-by-coordinates* are true sort by name will be first.
-	If both are false - sort by id will be performed.
+	Should workspaces be sorted by coordinates. ++
+	Note that if both  *sort-by-name* and *sort-by-coordinates* are true sort by name will be first. If both are false - sort by id will be performed.
 
 *sort-by-number*: ++
 	typeof: bool ++
@@ -65,7 +64,7 @@ Addressed by *wlr/workspaces*
 Additional to workspace name matching, the following *format-icons* can be set.
 
 - *default*: Will be shown, when no string match is found.
-- *focused*: Will be shown, when workspace is focused
+- *active*: Will be shown, when workspace is active
 
 # EXAMPLES
 
@@ -78,7 +77,7 @@ Additional to workspace name matching, the following *format-icons* can be set.
 		"3": "",
 		"4": "",
 		"5": "",
-		"focused": "",
+		"active": "",
 		"default": ""
 	},
 	"sort-by-number": true

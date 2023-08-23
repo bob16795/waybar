@@ -20,6 +20,7 @@
 #include "glibmm/fileutils.h"
 #include "glibmm/refptr.h"
 #include "util/format.hpp"
+#include "util/rewrite_string.hpp"
 #include "util/string.hpp"
 
 namespace waybar::modules::wlr {
@@ -506,17 +507,17 @@ void Task::handle_closed() {
   spdlog::debug("{} closed", repr());
   zwlr_foreign_toplevel_handle_v1_destroy(handle_);
   handle_ = nullptr;
+  tbar_->remove_task(id_);
   if (button_visible_) {
     tbar_->remove_button(button);
     button_visible_ = false;
   }
-  tbar_->remove_task(id_);
 }
 
 bool Task::handle_clicked(GdkEventButton *bt) {
   /* filter out additional events for double/triple clicks */
   if (bt->type == GDK_BUTTON_PRESS) {
-    /* save where the button press ocurred in case it becomes a drag */
+    /* save where the button press occurred in case it becomes a drag */
     drag_start_button = bt->button;
     drag_start_x = bt->x;
     drag_start_y = bt->y;
@@ -622,6 +623,9 @@ void Task::update() {
         fmt::format(fmt::runtime(format_before_), fmt::arg("title", title), fmt::arg("name", name),
                     fmt::arg("app_id", app_id), fmt::arg("state", state_string()),
                     fmt::arg("short_state", state_string(true)));
+
+    txt = waybar::util::rewriteString(txt, config_["rewrite"]);
+
     if (markup)
       text_before_.set_markup(txt);
     else
@@ -633,6 +637,9 @@ void Task::update() {
         fmt::format(fmt::runtime(format_after_), fmt::arg("title", title), fmt::arg("name", name),
                     fmt::arg("app_id", app_id), fmt::arg("state", state_string()),
                     fmt::arg("short_state", state_string(true)));
+
+    txt = waybar::util::rewriteString(txt, config_["rewrite"]);
+
     if (markup)
       text_after_.set_markup(txt);
     else
@@ -710,6 +717,7 @@ Taskbar::Taskbar(const std::string &id, const waybar::Bar &bar, const Json::Valu
   if (!id.empty()) {
     box_.get_style_context()->add_class(id);
   }
+  box_.get_style_context()->add_class("empty");
   event_box_.add(box_);
 
   struct wl_display *display = Client::inst()->wl_display;
@@ -862,11 +870,19 @@ void Taskbar::handle_finished() {
   manager_ = nullptr;
 }
 
-void Taskbar::add_button(Gtk::Button &bt) { box_.pack_start(bt, false, false); }
+void Taskbar::add_button(Gtk::Button &bt) {
+  box_.pack_start(bt, false, false);
+  box_.get_style_context()->remove_class("empty");
+}
 
 void Taskbar::move_button(Gtk::Button &bt, int pos) { box_.reorder_child(bt, pos); }
 
-void Taskbar::remove_button(Gtk::Button &bt) { box_.remove(bt); }
+void Taskbar::remove_button(Gtk::Button &bt) {
+  box_.remove(bt);
+  if (tasks_.empty()) {
+    box_.get_style_context()->add_class("empty");
+  }
+}
 
 void Taskbar::remove_task(uint32_t id) {
   auto it = std::find_if(std::begin(tasks_), std::end(tasks_),
