@@ -69,8 +69,8 @@ waybar::AModule* waybar::Factory::makeModule(const std::string& name) const {
     }
 #endif
 #ifdef HAVE_DWL
-    if (ref == "dwl/tags") {
-      return new waybar::modules::dwl::Tags(id, bar_, config_[name]);
+    if (ref == "dwl/title") {
+      return new waybar::modules::dwl::Title(id, bar_, config_[name]);
     }
 #endif
 #ifdef HAVE_HYPRLAND

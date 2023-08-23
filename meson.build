@@ -231,7 +231,7 @@ endif
 
 if true
     add_project_arguments('-DHAVE_DWL', language: 'cpp')
-    src_files += 'src/modules/dwl/tags.cpp'
+    src_files += 'src/modules/dwl/title.cpp'
 endif
 
 if true

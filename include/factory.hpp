@@ -24,7 +24,7 @@
 #include "modules/river/window.hpp"
 #endif
 #ifdef HAVE_DWL
-#include "modules/dwl/tags.hpp"
+#include "modules/dwl/title.hpp"
 #endif
 #ifdef HAVE_HYPRLAND
 #include "modules/hyprland/backend.hpp"
